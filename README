@@ -1,0 +1,13 @@
+Help
+Mandatory on every command: -k flag followed by filename containing credentials OR from AWS_CREDENTIALS_FILE env variable
+Optional on every command: --verbose flag for XML output if the command has one
+---
+ses-verify-email-address.pl -l - List of verified e-mail addresses
+ses-verify-email-address.pl -v EMAIL_ADDRESS - send verification request to e-mail address - NO OUTPUT
+ses-verify-email-address.pl -d EMAIL_ADDRESS - delete e-mail address - NO OUTPUT
+---
+ses-get-stats.pl -q - Send Quota information
+ses-get-stats.pl -s - Send Statistics information
+---
+ses-send-email.pl -s SUBJECT -f SENDER_EMAIL "RECEIVER_EMAIL1,RECEIVER_EMAIL2,..." [-b "BCC_EMAIL1, BCC_EMAIL2..."] [-c "CC_EMAIL1, CC_EMAIL2..."] BODY_FILE - send e-mail - NO OUTPUT
+ses-send-email.pl -r RAW_MESSAGE_FILE - send e-mail using raw message - NO OUTPUT
