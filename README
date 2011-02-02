@@ -1,3 +1,7 @@
+-e (custom endpoint flag) not working, doesn't seem to show up on the API
+
+(output of -h)
+
 Help
 Mandatory on every command: -k flag followed by filename containing credentials OR from AWS_CREDENTIALS_FILE env variable
 Optional on every command: --verbose flag for XML output if the command has one
