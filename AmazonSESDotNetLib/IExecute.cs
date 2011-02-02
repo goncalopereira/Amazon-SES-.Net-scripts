@@ -1,7 +1,7 @@
 ﻿using Amazon.Runtime;
 using Amazon.SimpleEmail;
 
-namespace spikeAmazonSES
+namespace AmazonSESDotNetLib
 {
 	public interface IExecute
 	{

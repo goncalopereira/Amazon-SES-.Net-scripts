@@ -2,7 +2,7 @@
 using Amazon.Runtime;
 using Amazon.SimpleEmail.Model;
 
-namespace spikeAmazonSES
+namespace AmazonSESDotNetLib
 {
 	public class Output
 	{	

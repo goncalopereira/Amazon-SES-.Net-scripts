@@ -1,59 +1,58 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using Amazon.Runtime;
 using Amazon.SimpleEmail;
 using Amazon.SimpleEmail.Model;
 
-namespace spikeAmazonSES
+namespace AmazonSESDotNetLib
 {
-	public class ExecuteSendQuota : Execute
+	public class ExecuteSendQuota : IExecute
 	{
-		public override AmazonWebServiceResponse ExecuteService(ValidationResult param, AmazonSimpleEmailService emailService) {
+		public  AmazonWebServiceResponse ExecuteService(ValidationResult param, AmazonSimpleEmailService emailService) {
 			return emailService.GetSendQuota(new GetSendQuotaRequest());
 		}
 	}
 
-	public class ExecuteSendStatistics : Execute
+	public class ExecuteSendStatistics : IExecute
 	{
-		public override AmazonWebServiceResponse ExecuteService(ValidationResult param, AmazonSimpleEmailService emailService) {
+		public  AmazonWebServiceResponse ExecuteService(ValidationResult param, AmazonSimpleEmailService emailService) {
 			return emailService.GetSendStatistics(new GetSendStatisticsRequest());
 		}
 	}
 
-	public class ExecuteDeleteVerifiedEmailAddress : Execute
+	public class ExecuteDeleteVerifiedEmailAddress : IExecute
 	{
-		public override AmazonWebServiceResponse ExecuteService(ValidationResult param, AmazonSimpleEmailService emailService) {
+		public  AmazonWebServiceResponse ExecuteService(ValidationResult param, AmazonSimpleEmailService emailService) {
 			emailService.DeleteVerifiedEmailAddress(new DeleteVerifiedEmailAddressRequest().WithEmailAddress(param.SenderEmail));
 			return null;
 		}
 	}
 
-	public class ExecuteVerifyEmailAddress : Execute
+	public class ExecuteVerifyEmailAddress : IExecute
 	{
-		public override AmazonWebServiceResponse ExecuteService(ValidationResult param, AmazonSimpleEmailService emailService) {
+		public  AmazonWebServiceResponse ExecuteService(ValidationResult param, AmazonSimpleEmailService emailService) {
 			emailService.VerifyEmailAddress(new VerifyEmailAddressRequest().WithEmailAddress(param.SenderEmail));
 			return null;
 		}
 	}
 
-	public class ExecuteListVerifiedEmailAddresses : Execute {
-		public override AmazonWebServiceResponse ExecuteService(ValidationResult param, AmazonSimpleEmailService emailService) {
+	public class ExecuteListVerifiedEmailAddresses : IExecute {
+		public  AmazonWebServiceResponse ExecuteService(ValidationResult param, AmazonSimpleEmailService emailService) {
 			return emailService.ListVerifiedEmailAddresses(new ListVerifiedEmailAddressesRequest());
 		}
 	}
 
-	public class ExecuteSendRawEmail : Execute {
-		public override AmazonWebServiceResponse ExecuteService(ValidationResult param, AmazonSimpleEmailService emailService) {
+	public class ExecuteSendRawEmail : IExecute {
+		public  AmazonWebServiceResponse ExecuteService(ValidationResult param, AmazonSimpleEmailService emailService) {
 			MemoryStream memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(param.Body.ToCharArray()));
 			emailService.SendRawEmail(new SendRawEmailRequest().WithRawMessage(new RawMessage(memoryStream)));		
 			return null;
 		}
 	}
 
-	public class ExecuteSendEmail : Execute {
+	public class ExecuteSendEmail : IExecute {
 
-		public override AmazonWebServiceResponse ExecuteService(ValidationResult param, AmazonSimpleEmailService emailService) {
+		public  AmazonWebServiceResponse ExecuteService(ValidationResult param, AmazonSimpleEmailService emailService) {
 			var destination = new Destination()
 					.WithToAddresses(param.EmailAddresses)
 					.WithCcAddresses(param.CC)
@@ -71,14 +70,10 @@ namespace spikeAmazonSES
 		}
 	}
 	
-	public abstract class Execute : IExecute
+	public class Execute
 	{	
 		public static AmazonSimpleEmailService GetEmailService(Credentials credentials) {
 			return credentials != null ? new AmazonSimpleEmailServiceClient(credentials.Key, credentials.Secret) : null;
-		}
-
-		public virtual AmazonWebServiceResponse ExecuteService(ValidationResult param, AmazonSimpleEmailService emailService) {
-			throw new NotImplementedException();
 		}
 	}
 }

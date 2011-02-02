@@ -1,4 +1,4 @@
-﻿namespace spikeAmazonSES
+﻿namespace AmazonSESDotNetLib
 {
 	public enum ExecuteOptions
 	{

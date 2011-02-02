@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Amazon.Runtime;
 using Amazon.SimpleEmail;
+using AmazonSESDotNetLib;
 
 namespace spikeAmazonSES
 {
@@ -9,7 +10,7 @@ namespace spikeAmazonSES
 		static void Main(string[] args) {
 
 			ValidationResult validationResult = Validation.ParseAndValidateArguments(args);
-			AmazonSimpleEmailService amazonSimpleEmailService = spikeAmazonSES.Execute.GetEmailService(validationResult.Credentials);
+			AmazonSimpleEmailService amazonSimpleEmailService = AmazonSESDotNetLib.Execute.GetEmailService(validationResult.Credentials);
 
 			if (validationResult.Option != ExecuteOptions.UnknownOption) {				
 					Execute(validationResult, amazonSimpleEmailService);

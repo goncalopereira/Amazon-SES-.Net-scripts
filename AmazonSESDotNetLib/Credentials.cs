@@ -1,4 +1,4 @@
-﻿namespace spikeAmazonSES
+﻿namespace AmazonSESDotNetLib
 {
 	public class Credentials
 	{

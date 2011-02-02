@@ -3,7 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonSESDotNet", "spikeAmazonSES\AmazonSESDotNet.csproj", "{F2DFD7A6-5305-4354-885D-15081558FA7D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tests", "tests\tests.csproj", "{EB207C6A-F23F-47F8-8A47-1643A6F0DF6B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E57438E7-165D-4704-9813-62C49768F8D4}"
+	ProjectSection(SolutionItems) = preProject
+		AmazonSESDotNet.vsmdi = AmazonSESDotNet.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonSESDotNetLib", "AmazonSESDotNetLib\AmazonSESDotNetLib.csproj", "{532A5085-B296-4037-951B-5119C9732A80}"
+EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = AmazonSESDotNet.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -23,6 +37,26 @@ Global
 		{F2DFD7A6-5305-4354-885D-15081558FA7D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F2DFD7A6-5305-4354-885D-15081558FA7D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F2DFD7A6-5305-4354-885D-15081558FA7D}.Release|x86.ActiveCfg = Release|Any CPU
+		{EB207C6A-F23F-47F8-8A47-1643A6F0DF6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB207C6A-F23F-47F8-8A47-1643A6F0DF6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB207C6A-F23F-47F8-8A47-1643A6F0DF6B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EB207C6A-F23F-47F8-8A47-1643A6F0DF6B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EB207C6A-F23F-47F8-8A47-1643A6F0DF6B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EB207C6A-F23F-47F8-8A47-1643A6F0DF6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB207C6A-F23F-47F8-8A47-1643A6F0DF6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB207C6A-F23F-47F8-8A47-1643A6F0DF6B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EB207C6A-F23F-47F8-8A47-1643A6F0DF6B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EB207C6A-F23F-47F8-8A47-1643A6F0DF6B}.Release|x86.ActiveCfg = Release|Any CPU
+		{532A5085-B296-4037-951B-5119C9732A80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{532A5085-B296-4037-951B-5119C9732A80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{532A5085-B296-4037-951B-5119C9732A80}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{532A5085-B296-4037-951B-5119C9732A80}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{532A5085-B296-4037-951B-5119C9732A80}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{532A5085-B296-4037-951B-5119C9732A80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{532A5085-B296-4037-951B-5119C9732A80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{532A5085-B296-4037-951B-5119C9732A80}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{532A5085-B296-4037-951B-5119C9732A80}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{532A5085-B296-4037-951B-5119C9732A80}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
