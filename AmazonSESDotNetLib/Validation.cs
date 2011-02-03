@@ -8,9 +8,11 @@ namespace AmazonSESDotNetLib
 	public class Validation
 	{
 		private const string VERBOSE = "--verbose";
-		private const string ENDPOINT = "-e";
 		private const string CREDENTIALS = "-k";
 		private const string HELP = "-h";
+		private const string VERIFY_EMAIL_ADDRESS_COMMAND = "ses-verify-email-address.pl";
+		private const string GET_STATS_COMMAND = "ses-get-stats.pl";
+		private const string SEND_EMAIL_COMMAND = "ses-send-email.pl";
 
 		public static ValidationResult ParseAndValidateArguments(string[] args) {
 
@@ -18,14 +20,11 @@ namespace AmazonSESDotNetLib
 				return new ValidationResult {Option = ExecuteOptions.Help};
 			}
 
-			IValidation command = GetCommands(args[0]).Where(x => x.Validation(args) != null).FirstOrDefault();
+			IValidation command = GetValidationsForCommand(args[0]).Where(x => x.Validation(args) != null).FirstOrDefault();
 
 			if (command != null) {
 				ValidationResult result = command.Validation(args);
 
-				if (HasOptionWithArguments(args, ENDPOINT, 1)) {
-					result.EndPoint = GetOption(args, ENDPOINT, 1);
-				}
 				result.Credentials = GetCredentials(args);
 				result.Verbose = HasOptionWithArguments(args, VERBOSE, 0);
 
@@ -35,28 +34,19 @@ namespace AmazonSESDotNetLib
 			return new ValidationResult {Option = ExecuteOptions.UnknownOption};
 		}
 
-		private static IEnumerable<IValidation> GetCommands(string command) {
+		private static IEnumerable<IValidation> GetValidationsForCommand(string command) {
 			var commands = new Dictionary<string, List<IValidation>>
 			{
-				{
-					"ses-verify-email-address.pl",
-					new List<IValidation>
-					{
+				{VERIFY_EMAIL_ADDRESS_COMMAND,
+					new List<IValidation>{
 						new VerifyEmailAddressValidationL(),
 						new VerifyEmailAddressValidationV(),
-						new VerifyEmailAddressValidationD()
-					}
-					},
-				{
-					"ses-get-stats.pl",
-					new List<IValidation> {new GetStatsValidationS(), new GetStatsValidationQ()}
-					},
-				{
-					"ses-send-email.pl",
-					new List<IValidation>() {new SendEmailValidationSF(), new SendEmailValidationR()}
-					}
+						new VerifyEmailAddressValidationD()}},
+				{GET_STATS_COMMAND,
+					new List<IValidation> {new GetStatsValidationS(), new GetStatsValidationQ()}},
+				{SEND_EMAIL_COMMAND,
+					new List<IValidation>() {new SendEmailValidationSF(), new SendEmailValidationR()}}
 			};
-
 			return commands.ContainsKey(command) ? commands[command] : new List<IValidation>();
 		}
 
@@ -84,7 +74,6 @@ namespace AmazonSESDotNetLib
 					return args[index + i];
 				}
 			}
-
 			return null;
 		}
 	}

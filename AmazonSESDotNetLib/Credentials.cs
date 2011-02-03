@@ -2,8 +2,8 @@
 {
 	public class Credentials
 	{
-		private const string AWSACCESSKEYID = "AWSAccessKeyId";
-		private const string AWSSECRETKEY = "AWSSecretKey";
+		private const string AWS_ACCESS_KEY_ID = "AWSAccessKeyId";
+		private const string AWS_SECRET_KEY = "AWSSecretKey";
 
 		public string Key { get; set; }
 		public string Secret { get; set; }
@@ -15,7 +15,7 @@
 			string[] key = lines[0].Split('=');
 			string[] value = lines[1].Split('=');
 
-			if (key.Length != 2 && value.Length != 2 && key[0] != AWSACCESSKEYID && key[1] != AWSSECRETKEY) {
+			if (key.Length != 2 && value.Length != 2 && key[0] != AWS_ACCESS_KEY_ID && key[1] != AWS_SECRET_KEY) {
 				return null;
 			}
 

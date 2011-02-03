@@ -33,13 +33,13 @@ namespace spikeAmazonSES
 				return;
 			}
 
-			Dictionary<ExecuteOptions, IExecute> services = GetServices();
+			IExecute service = GetServiceFromOption(validationResult.Option);
 
 			AmazonWebServiceResponse response = null;
-			if (services.ContainsKey(validationResult.Option)) {				
+			if (service != null) {				
 				try 
 				{
-						response = services[validationResult.Option].ExecuteService(validationResult, amazonSimpleEmailService);
+						response = service.ExecuteService(validationResult, amazonSimpleEmailService);
 				} 
 				catch (AmazonSimpleEmailServiceException e) {
 					Console.WriteLine("{0}:{1}", e.ErrorType, e.Message);					
@@ -54,8 +54,8 @@ namespace spikeAmazonSES
 			}	
 		}
 
-		private static Dictionary<ExecuteOptions, IExecute> GetServices() {
-			return new Dictionary<ExecuteOptions, IExecute>
+		private static IExecute GetServiceFromOption(ExecuteOptions option) {
+			var list = new Dictionary<ExecuteOptions, IExecute>
 			{
 				{ExecuteOptions.ListVerifiedEmailAddresses,new ExecuteListVerifiedEmailAddresses()},
 				{ExecuteOptions.VerifyEmailAddress,new ExecuteVerifyEmailAddress()},
@@ -65,6 +65,8 @@ namespace spikeAmazonSES
 				{ExecuteOptions.SendEmail, new ExecuteSendEmail()},
 				{ExecuteOptions.SendRawEmail, new ExecuteSendRawEmail()}
 			};
+
+			return list.ContainsKey(option) ? list[option] : null;
 		}
 	}
 }
