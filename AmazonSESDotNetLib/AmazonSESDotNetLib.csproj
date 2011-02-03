@@ -46,6 +46,7 @@
     <Compile Include="ExecuteOptions.cs" />
     <Compile Include="GetStatsValidation.cs" />
     <Compile Include="IExecute.cs" />
+    <Compile Include="IValidation.cs" />
     <Compile Include="Output.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SendEmailValidation.cs" />

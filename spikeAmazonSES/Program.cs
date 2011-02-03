@@ -10,17 +10,18 @@ namespace spikeAmazonSES
 		static void Main(string[] args) {
 
 			ValidationResult validationResult = Validation.ParseAndValidateArguments(args);
-			AmazonSimpleEmailService amazonSimpleEmailService = AmazonSESDotNetLib.Execute.GetEmailService(validationResult.Credentials);
+		
+			AmazonSimpleEmailService amazonSimpleEmailService = Execute.GetEmailService(validationResult.Credentials);
 
 			if (validationResult.Option != ExecuteOptions.UnknownOption) {				
-					Execute(validationResult, amazonSimpleEmailService);
+					ExecuteService(validationResult, amazonSimpleEmailService);
 				}
 			else {
 					Output.ShowUnknown();
 			}			
 		}
 
-		public static void Execute(ValidationResult validationResult, AmazonSimpleEmailService amazonSimpleEmailService) {
+		public static void ExecuteService(ValidationResult validationResult, AmazonSimpleEmailService amazonSimpleEmailService) {
 
 			if (validationResult.Option == ExecuteOptions.Help) {
 				Output.ShowHelp();

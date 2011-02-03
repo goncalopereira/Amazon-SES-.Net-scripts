@@ -5,71 +5,67 @@ using System.Linq;
 
 namespace AmazonSESDotNetLib
 {
-	public interface IValidation
-	{
-		ValidationResult Validation(string[] args);
-	}
-
 	public class Validation
 	{
+		private const string VERBOSE = "--verbose";
+		private const string ENDPOINT = "-e";
+		private const string CREDENTIALS = "-k";
+		private const string HELP = "-h";
+
 		public static ValidationResult ParseAndValidateArguments(string[] args) {
 
-			if (HasOptionH(args)) {
+			if (HasOptionWithArguments(args, HELP, 0)) {
 				return new ValidationResult {Option = ExecuteOptions.Help};
 			}
 
-			Dictionary<string, IValidation> commands = GetCommands();
+			IValidation command = GetCommands(args[0]).Where(x => x.Validation(args) != null).FirstOrDefault();
 
-			if (commands.ContainsKey(args[0])) {
+			if (command != null) {
+				ValidationResult result = command.Validation(args);
 
-				ValidationResult result = commands[args[0]].Validation(args);
-
-				if (result != null) {
-					if (HasOptionE(args)) {
-						result.EndPoint = GetOption(args, "-e", 1);
-					}
-					result.Credentials = GetCredentials(args);
-					result.Verbose = HasOptionVerbose(args);
-
-					return result;
+				if (HasOptionWithArguments(args, ENDPOINT, 1)) {
+					result.EndPoint = GetOption(args, ENDPOINT, 1);
 				}
-				return new ValidationResult { Option = ExecuteOptions.UnknownOption };
+				result.Credentials = GetCredentials(args);
+				result.Verbose = HasOptionWithArguments(args, VERBOSE, 0);
+
+				return result;
 			}
-	
+		
 			return new ValidationResult {Option = ExecuteOptions.UnknownOption};
 		}
 
-		private static Dictionary<string, IValidation> GetCommands() {
-			return new Dictionary<string, IValidation>
+		private static IEnumerable<IValidation> GetCommands(string command) {
+			var commands = new Dictionary<string, List<IValidation>>
 			{
-				{"ses-verify-email-address.pl", new VerifyEmailAddressValidation()},
-				{"ses-get-stats.pl", new GetStatsValidation()},
-				{"ses-send-email.pl", new SendEmailValidation()}
+				{
+					"ses-verify-email-address.pl",
+					new List<IValidation>
+					{
+						new VerifyEmailAddressValidationL(),
+						new VerifyEmailAddressValidationV(),
+						new VerifyEmailAddressValidationD()
+					}
+					},
+				{
+					"ses-get-stats.pl",
+					new List<IValidation> {new GetStatsValidationS(), new GetStatsValidationQ()}
+					},
+				{
+					"ses-send-email.pl",
+					new List<IValidation>() {new SendEmailValidationSF(), new SendEmailValidationR()}
+					}
 			};
+
+			return commands.ContainsKey(command) ? commands[command] : new List<IValidation>();
 		}
 
-		private static bool HasOptionE(string[] args) {
-			return args.Where((s, index) => s == "-e" && args.Length > index + 1).Any();
-		}
-
-		protected static bool HasOptionC(string[] args) {
-			return args.Where((s, index) => s == "-c" && args.Length > index + 1).Any();
-		}
-
-		protected static bool HasOptionB(string[] args) {
-			return args.Where((s, index) => s == "-b" && args.Length > index + 1).Any();
-		}
-
-		private static bool HasOptionVerbose(IEnumerable<string> args) {
-			return args.Where((s, index) => s == "--verbose").Any();
-		}
-
-		private static bool HasOptionH(IEnumerable<string> args) {
-			return args.Where((s, index) => s == "-h").Any();
+		protected static bool HasOptionWithArguments(string[] args, string optionName, int numberOfArguments) {
+			return args.Where((s, index) => s == optionName && args.Length > index + numberOfArguments).Any();
 		}
 
 		private static Credentials GetCredentials(string[] args) {
-			return HasCredentials(args) ? GetCredentialsFromArguments(args) : GetCredentialsFromEnv();
+			return HasOptionWithArguments(args, CREDENTIALS, 1) ? GetCredentialsFromArguments(args) : GetCredentialsFromEnv();
 		}
 
 		private static Credentials GetCredentialsFromEnv() {
@@ -78,12 +74,8 @@ namespace AmazonSESDotNetLib
 		}
 
 		private static Credentials GetCredentialsFromArguments(string[] args) {
-			var filePath = GetOption(args, "-k", 1);
+			var filePath = GetOption(args, CREDENTIALS, 1);
 			return File.Exists(filePath) ? Credentials.GetCredentialsFromFile(File.ReadAllLines(filePath)) : null;
-		}
-
-		protected static string GetBody(string path) {
-			return File.Exists(path) ? File.ReadAllText(path) : path;
 		}
 
 		protected static string GetOption(string[] args, string s, int i) {
@@ -94,42 +86,6 @@ namespace AmazonSESDotNetLib
 			}
 
 			return null;
-		}
-
-		public static bool HasCredentials(string[] args) {
-			return args.Where((s, index) => s == "-k" && args.Length > index + 1).Any();
-		}
-
-		protected static bool HasOptionR(string[] args) {
-			return args.Where((s, index) => s == "-d" && args.Length > index + 1).Any();
-		}
-
-		protected static bool HasOptionF(IList<string> args) {
-			return args.Where((s, index) => s == "-f" && args.Count > index + 2).Any();
-		}
-
-		protected static bool HasOptionStats(IEnumerable<string> args) {
-			return args.Any(s => s == "-s");
-		}
-
-		protected static bool HasOptionQ(IEnumerable<string> args) {
-			return args.Any(s => s == "-q");
-		}
-
-		protected static bool HasOptionD(string[] args) {
-			return args.Where((s, index) => s == "-d" && args.Length > index + 1).Any();
-		}
-
-		protected static bool HasOptionSubject(IList<string> args) {
-			return args.Where((s, index) => s == "-s" && args.Count > index + 1).Any();
-		}
-
-		protected static bool HasOptionV(string[] args) {
-			return args.Where((s, index) => s == "-v" && args.Length > index + 1).Any();
-		}
-
-		protected static bool HasOptionL(IEnumerable<string> args) {
-			return args.Any(s => s == "-l");
 		}
 	}
 }
